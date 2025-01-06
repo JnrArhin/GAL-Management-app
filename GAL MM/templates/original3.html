@@ -1,0 +1,1145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#000000" />
+  <meta name="description" content="Comprehensive Mining KPI Dashboard and Management Forms" />
+  <title>GAL Management App</title>
+  <style>
+      body {
+          font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+          line-height: 1.6;
+          margin: 0;
+          padding: 0;
+          color: #333;
+      }
+      header, nav, main, footer {
+          padding: 1rem;
+      }
+      header {
+          background-color: #1a5f7a;
+          color: white;
+      }
+      nav ul {
+          list-style-type: none;
+          padding: 0;
+          background-color: #f4f4f4;
+      }
+      nav ul li {
+          display: inline-block;
+          margin-right: 1rem;
+      }
+      nav ul li a {
+          display: block;
+          padding: 0.5rem 1rem;
+          text-decoration: none;
+          color: #333;
+      }
+      nav ul li a:hover, nav ul li a.active {
+          background-color: #ddd;
+      }
+      .dashboard-grid {
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+          gap: 1rem;
+      }
+      .kpi-card, .form-section {
+          border: 1px solid #ddd;
+          padding: 1rem;
+          border-radius: 5px;
+          background-color: #fff;
+      }
+      .tab-content {
+          display: none;
+      }
+      .tab-content.active {
+          display: block;
+      }
+      form {
+          display: grid;
+          gap: 1rem;
+      }
+      label {
+          font-weight: bold;
+      }
+      input, select, textarea {
+          width: 100%;
+          padding: 0.5rem;
+          border: 1px solid #ddd;
+          border-radius: 4px;
+      }
+      button {
+          background-color: #1a5f7a;
+          color: white;
+          padding: 0.5rem 1rem;
+          border: none;
+          border-radius: 4px;
+          cursor: pointer;
+      }
+      button:hover {
+          background-color: #134b61;
+      }
+      h4 {
+          margin-top: 1rem;
+          margin-bottom: 0.5rem;
+          font-weight: bold;
+      }
+      .form-section {
+          margin-bottom: 2rem;
+      }
+      .equipment-stats {
+          background-color: #f9f9f9;
+          padding: 1rem;
+          border-radius: 5px;
+          margin-top: 1rem;
+      }
+      /* Color themes for each section */
+      #production {
+          background-color: #e6f3ff;
+      }
+      #safety {
+          background-color: #fff0e6;
+      }
+      #maintenance {
+          background-color: #e6ffe6;
+      }
+      #environmental {
+          background-color: #f0e6ff;
+      }
+  </style>
+</head>
+<body>
+  <header>
+      <h1>GAL Management App</h1>
+  </header>
+  
+  
+  <nav>
+      <ul>
+          <li><a href="#dashboard" class="tab-link active" data-tab="dashboard">Dashboard</a></li>
+          <li><a href="#mining" class="tab-link" data-tab="mining">Mining</a></li>
+          <li><a href="#processing" class="tab-link" data-tab="processing">Processing</a></li>
+          <li><a href="#geology" class="tab-link" data-tab="geology">Geology</a></li>
+          <li><a href="#safety" class="tab-link" data-tab="safety">Safety</a></li>
+          <li><a href="#maintenance" class="tab-link" data-tab="maintenance">Maintenance</a></li>
+          <li><a href="#environmental" class="tab-link" data-tab="environmental">Environmental</a></li>
+          <li><a href="#community-relations" class="tab-link" data-tab="community-relations">Community Relations</a></li>
+          <li><a href="#procurement" class="tab-link" data-tab="procurement">Procurement</a></li>
+      </ul>
+  </nav>
+  
+  <main>
+      <section id="dashboard" class="tab-content active">
+          <h2>KPI Dashboard</h2>
+          <div class="dashboard-grid">
+              <div class="kpi-card">
+                  <h3>Total Ore Mined</h3>
+                  <p id="total-ore-mined">0</p>
+              </div>
+              <div class="kpi-card">
+                  <h3>Total Waste Mined</h3>
+                  <p id="total-waste-mined">0</p>
+              </div>
+              <div class="kpi-card">
+                  <h3>Striping Ratio</h3>
+                  <p id="striping-ratio">0.00</p>
+              </div>
+              <div class="kpi-card">
+                <h3>Daily Production</h3>
+                <p>10,000 tons</p>
+            </div>
+            <div class="kpi-card">
+                <h3>Safety Incidents</h3>
+                <p>0 in last 30 days</p>
+            </div>
+            <div class="kpi-card">
+                <h3>Equipment Availability</h3>
+                <p>95%</p>
+            </div>
+            <div class="kpi-card">
+                <h3>Recovery Rate</h3>
+                <p>92%</p>
+            </div>
+              <!-- Add more KPI cards as needed -->
+          </div>
+      </section>
+      
+      <section id="mining" class="tab-content">
+          <h2> Mining</h2>
+          <div class="form-section">
+              <h3>Material Mined</h3>
+              <form id="mining-form" action="/submit_mining_material_data" method="POST">
+                  <label for="mining-date">Date:</label>
+                  <input type="date" id="mining-date" name="mining-date" required>
+                  
+                  <label for="mining-shift">Shift:</label>
+                  <select id="mining-shift" name="mining-shift" required>
+                      <option value="">Select Shift</option>
+                      <option value="day">Day</option>
+                      <option value="night">Night</option>
+                  </select>
+                  
+                  <label for="ore-truck-count">Total Ore Truck count :</label>
+                  <input type="number" id="ore-truck-count" name="ore-truck-count" min="0" required>
+                  
+                  <label for="waste-truck-count">Total Waste Truck count:</label>
+                  <input type="number" id="waste-truck-count" name="waste-truck-count" min="0" required>
+                  
+                  <button type="submit">Submit Mining Materials Data</button>
+                  <div id="mining-form-message" class="success-message"></div>
+              </form>
+              <h3>Equipment Statistics</h3>
+              <form id="equipment-statistics-form" action="/submit_equipment_stats_data" method="POST">
+                  <label for="mining-date">Date:</label>
+                  <input type="date" id="mining-date" name="mining-date" required>
+                  
+                  <label for="mining-shift">Shift:</label>
+                  <select id="mining-shift" name="mining-shift" required>
+                      <option value="">Select Shift</option>
+                      <option value="day">Day</option>
+                      <option value="night">Night</option>
+                  </select>
+                  
+                  <label for="equipment-id">Select or Enter Equipment ID:</label>
+                  <input list="equipment-ids" id="equipment-id" name="equipment-id" placeholder="Select or type...">
+                  <datalist id="equipment-ids">
+                    <option value="EX01">
+                    <option value="EX02">
+                    <option value="EX03">
+                    <option value="YEX01">
+                    <option value="YEX02">
+                    <option value="ADT01">
+                    <option value="ADT02">
+                    <option value="ADT03">
+                    <option value="ADT04">
+                    <option value="YDT17">
+                    <option value="YDT21">
+                    <option value="YDT25">
+                  </datalist>
+
+                  <label for="start-hour-meter">Start Hour Meter:</label>
+                  <input type="number" id="start-hour-meter" name="start-hour-meter" step="0.01" oninput="calculateRunHours()">
+
+                  <label for="end-hour-meter">End Hour Meter:</label>
+                  <input type="number" id="end-hour-meter" name="end-hour-meter" min="0" step="0.01" oninput="calculateRunHours()">
+
+                  <label for="equipment-run-hours">Equipment Run Hours:</label>
+                  <input type="number" id="equipment-run-hours" name="equipment-run-hours" step="0.01" required readonly>
+                  
+                  <script>
+                      function calculateRunHours() {
+                          const startHourMeter = parseFloat(document.getElementById('start-hour-meter').value) || 0;
+                          const endHourMeter = parseFloat(document.getElementById('end-hour-meter').value) || 0;
+                          const runHours = endHourMeter - startHourMeter;
+                          document.getElementById('equipment-run-hours').value = runHours.toFixed(2);
+                      }
+                  </script>
+
+                  <label for="fuel-recieved">Fuel Recieved:</label>
+                  <input type="number" id="fuel-recieved" name="fuel-recieved" required>
+
+                  <label for="mining-operations-start-time">Start Time:</label>
+                  <input type="time" id="mining-operations-start-time" name="mining-operations-start-time" required>
+
+                  <label for="mining-operations-end-time">End Time:</label>
+                  <input type="time" id="mining-operations-end-time" name="mining-operations-end-time" required>
+
+                  <label for="total-worked-hours">Total Worked Hours:</label>
+                  <input type="number" id="total-worked-hours" name="total-worked-hours" step="0.01" required oninput="calculateStandbyHours()" pattern="^\d+(\.\d{1,2})?$">
+
+                  <label for="total-downtime-hours">Total Downtime Hours:</label>
+                  <input type="number" id="total-downtime-hours" name="total-downtime-hours" step="0.01" required oninput="calculateStandbyHours()" pattern="^\d+(\.\d{1,2})?$">
+
+                  <label for="total-tramming-hours">Total Tramming Hours:</label>
+                  <input type="number" id="total-tramming-hours" name="total-tramming-hours" min="0" step="0.01" required oninput="calculateStandbyHours()" pattern="^\d+(\.\d{1,2})?$">
+
+                  <label for="operational-gsa-hours">Total Operational GSA Hours:</label>
+                  <input type="number" id="operational-gsa-hours" name="operational-gsa-hours" step="0.01" required oninput="calculateStandbyHours()" pattern="^\d+(\.\d{1,2})?$">
+
+                  <label for="other-gsa-hours">Total Other GSA Hours:</label>
+                  <input type="number" id="other-gsa-hours" name="other-gsa-hours" step="0.01" required oninput="calculateStandbyHours()" pattern="^\d+(\.\d{1,2})?$">
+
+                  <label for="equipment-standby">Total Standby Hours:</label>
+                  <input type="number" id="equipment-standby" name="equipment-standby" step="0.01" required readonly>
+
+                  <script>
+                      function calculateStandbyHours() {
+                          const workedHours = parseFloat(document.getElementById('total-worked-hours').value) || 0;
+                          const downtimeHours = parseFloat(document.getElementById('total-downtime-hours').value) || 0;
+                          const trammingHours = parseFloat(document.getElementById('total-tramming-hours').value) || 0;
+                          const operationalGsaHours = parseFloat(document.getElementById('operational-gsa-hours').value) || 0;
+                          const otherGsaHours = parseFloat(document.getElementById('other-gsa-hours').value) || 0;
+
+                          const totalHours = workedHours + downtimeHours + trammingHours + operationalGsaHours + otherGsaHours;
+                          const standbyHours = 12 - totalHours;
+
+                          document.getElementById('equipment-standby').value = standbyHours >= 0 ? standbyHours.toFixed(2) : 0;
+                      }
+                  </script>
+
+                  <label for="comments">Comments:</label>
+                  <textarea id="comments" name="comments" rows="4" ></textarea>
+
+                  <label for="operator-name">Operator Name:</label>
+                  <input type="text" id="operator-name" name="operator-name" required>
+
+                  <label for="Supervisor Name">Supervisor Name:</label>
+                  <input type="text" id="Supervisor Name" name="Supervisor Name" required>
+                  
+                  <button type="submit">Submit Mining Data</button>
+                  <div id="equipment-form-message" class="success-message"></div>
+              </form>
+          </div>
+      </section>
+
+      <section id="processing" class="tab-content">
+        <h2> Process Operations</h2>
+        <div class="form-section">
+            <h3>Crushing Plant</h3>
+            <form id="crushing-plant-form" action="/submit_crushing_data" method="POST">
+                <label for="crushing-date">Date:</label>
+                <input type="date" id="crushing-date" name="crushing-date" required>
+
+                <label for="crushing-shift">Shift:</label>
+                  <select id="crushing-shift" name="crushing-shift" required>
+                      <option value="">Select Shift</option>
+                      <option value="day">Day</option>
+                      <option value="night">Night</option>
+                  </select>
+
+                  <label for="crushing-start-time">Start Time:</label>
+                  <input type="time" id="crushing-start-time" name="crushing-start-time" required>
+
+                  <label for="crushing-end-time">End Time:</label>
+                  <input type="time" id="crushing-end-time" name="crushing-end-time" required>
+
+                  <label for="crusher-run-hours">Crusher Run Hours:</label>
+                  <input type="number" id="crusher-run-hours" name="crusher-run-hours" step="0.01" required>
+
+                  <label for="crusher-downtime">Total Crusher Downtime:</label>
+                  <input type="number" id="crusher-downtime" name="crusher-downtime" step="0.01" required>
+
+                  <label for="feed-bucket-count">Bucket Counts:</label>
+                  <input type="number" id="feed-bucket-count" name="feed-bucket-count" step="0.01" required>
+
+                  <label for="cement-used">Cement Used (Bags):</label>
+                  <input type="number" id="cement-used" name="cement-used" required>
+
+                  <label for="cement-left"> Number of Cement Left (Bags):</label>
+                  <input type="number" id="cement-left" name="cement-left" required>
+
+                  <label for="operator-name">Operator Name:</label>
+                  <input type="text" id="operator-name" name="operator-name" required>
+
+                  <label for="Supervisor Name">Supervisor Name:</label>
+                  <input type="text" id="Supervisor Name" name="Supervisor Name" required>
+
+                  <button type="submit">Submit Crushing Data</button>
+                  <div id="crushing-form-message" class="success-message"></div>
+                </form>
+
+            <h3>Solution Management</h3>
+             <form id="solution-management-form" action="/submit_solution_management_data" method="POST">
+                <label for="date">Date:</label>
+                <input type="date" id="date" name="date" required>
+
+                <label for="shift">Shift:</label>
+                  <select id="shift" name="shift" required>
+                      <option value="">Select Shift</option>
+                      <option value="day">Day</option>
+                      <option value="night">Night</option>
+                  </select>
+
+                <label for="pump">Pump ID:</label>
+                  <select id="pump" name="pump" required onchange="toggleInputs()">
+                      <option value="">Select Pump</option>
+                      <option value="pregnant-pump-1">Pregnant Pump 1</option>
+                      <option value="pregnant-pump-2">Pregnant Pump 2</option>
+                      <option value="barren-pump-1">Barren Pump 1</option>
+                      <option value="barren-pump-2">Barren Pump 2</option>
+                  </select>  
+                
+                <label for="totalizer1-end">Totalizer 1 End</label>
+                <input type="number" id="totalizer1-end" name="totalizer1-end" required oninput="calculatetotalizer1volume()">
+                
+                <label for="totalizer1-start">Totalizer 1 Start</label>
+                <input type="number" id="totalizer1-start" name="totalizer1-start" required oninput="calculatetotalizer1volume()">
+
+                <div id="totalizer2-section" style="display: none;">
+                    <label for="totalizer2-end">Totalizer 2 End</label>
+                    <input type="number" id="totalizer2-end" name="totalizer2-end" required oninput="calculatetotalizer2volume()">
+
+                    <label for="totalizer2-start">Totalizer 2 Start</label>
+                    <input type="number" id="totalizer2-start" name="totalizer2-start" required oninput="calculatetotalizer2volume()">
+
+                    <label for="volume-totalizer2">Totalizer 2 Volume</label>
+                    <input type="number" id="volume-totalizer2" name="volume-totalizer2" required readonly>
+                </div>
+
+                <div id="barren-cn-section" style="display: none;">
+                    <label for="barren-to-heap-cn">Barren to Heap CN (ppm):</label>
+                    <input type="number" id="barren-to-heap-cn" name="barren-to-heap-cn" required>
+                </div>
+
+                <label for="volume-totalizer1">Totalizer 1 Volume</label>
+                <input type="number" id="volume-totalizer1" name="volume-totalizer1" required readonly>
+
+                <label for="final-volume-for-shift">Total volume (m3)</label>
+                <input type="number" id="final-volume-for-shift" name="final-volume-for-shift" required readonly>
+
+                <script>
+                    function toggleInputs() {
+                        const pumpSelect = document.getElementById('pump');
+                        const totalizer2Section = document.getElementById('totalizer2-section');
+                        const barrenCNSection = document.getElementById('barren-cn-section');
+                        const selectedPump = pumpSelect.value;
+
+                        // Show Totalizer 2 inputs if a barren pump is selected
+                        if (selectedPump.includes('barren')) {
+                            totalizer2Section.style.display = 'block';
+                            barrenCNSection.style.display = 'block';
+                        } else {
+                            totalizer2Section.style.display = 'none';
+                            barrenCNSection.style.display = 'none';
+                            // Reset Totalizer 2 values when hidden
+                            document.getElementById('totalizer2-end').value = '';
+                            document.getElementById('totalizer2-start').value = '';
+                            document.getElementById('volume-totalizer2').value = '';
+                            // Reset Barren to Heap CN when hidden
+                            document.getElementById('barren-to-heap-cn').value = '';
+                        }
+                    }
+
+                    function calculatetotalizer1volume() {
+                        const totalizer1end = parseFloat(document.getElementById('totalizer1-end').value) || 0;
+                        const totalizer1start = parseFloat(document.getElementById('totalizer1-start').value) || 0;
+
+                        const totalvolumefortotalizer1 = totalizer1end - totalizer1start;
+
+                        document.getElementById('volume-totalizer1').value = totalvolumefortotalizer1 >= 0 ? totalvolumefortotalizer1.toFixed(2) : 0;
+
+                        // Recalculate final volume when Totalizer 1 changes
+                        calculatefinalvolumefortheshift();
+                    }
+
+                    function calculatetotalizer2volume() {
+                        const totalizer2end = parseFloat(document.getElementById('totalizer2-end').value) || 0;
+                        const totalizer2start = parseFloat(document.getElementById('totalizer2-start').value) || 0;
+
+                        const totalvolumefortotalizer2 = totalizer2end - totalizer2start;
+
+                        document.getElementById('volume-totalizer2').value = totalvolumefortotalizer2 >= 0 ? totalvolumefortotalizer2.toFixed(2) : 0;
+
+                        // Recalculate final volume when Totalizer 2 changes
+                        calculatefinalvolumefortheshift();
+                    }
+
+                    function calculatefinalvolumefortheshift() {
+                        const volumeTotalizer2 = parseFloat(document.getElementById('volume-totalizer2').value) || 0;
+                        const volumeTotalizer1 = parseFloat(document.getElementById('volume-totalizer1').value) || 0;
+
+                        // Calculate the final volume for the shift using these values
+                        const finalVolumeForTheShift = volumeTotalizer2 + volumeTotalizer1;
+
+                        // Update the relevant element with the calculated value
+                        document.getElementById('final-volume-for-shift').value = finalVolumeForTheShift.toFixed(2);
+                    }
+                </script>
+
+                <label for="flow-rate">Flow Rate (m3/hr):</label>
+                <input type="number" id="flow-rate" name="flow-rate" required>
+                
+                <label for="pump-run-hours">Pump Run Hours:</label>
+                <input type="number" id="pump-run-hours" name="pump-run-hours" required>
+
+                <label for="Supervisor Name">Supervisor Name:</label>
+                <input type="text" id="Supervisor Name" name="Supervisor Name" required>
+
+                <button type="submit">Submit Solution Management Data</button>
+                  <div id="solution-management-form-message" class="success-message"></div>
+            </form>
+      </section>
+      <section id="geology" class="tab-content">
+        <h2>Gold Exploration Geology Metrics</h2>
+        <form id="exploration-geology-metrics-form" action="/submit_exploration_geology_metrics" method="POST">
+    
+            <!-- Mapping Stage -->
+            <fieldset>
+                <legend>Mapping Stage</legend>
+
+                <label for="map-date">Date:</label>
+                <input type="date" id="map-date" name="map-date" required>
+    
+                <label for="map-shift">Shift:</label>
+                <select id="map-shift" name="map-shift" required>
+                    <option value="">Select Shift</option>
+                    <option value="day">Day</option>
+                    <option value="night">Night</option>
+                </select>
+    
+                <label for="map-scale">Map Scale (e.g., 1:50,000):</label>
+                <input type="text" id="map-scale" name="map-scale" required>
+
+                <label for="traverse-distance">Traverse Distance (m)):</label>
+                <input type="number" id="traverse-distance" name="traverse-distance" required>
+
+                <label for="area-covered">Area Covered (m2)):</label>
+                <input type="number" id="area-covered" name="area-covered" required>
+    
+                <label for="rock-formation">Rock Formation (Name and Type):</label>
+                <input type="text" id="rock-formation" name="rock-formation" required>
+    
+                <label for="mineralization-indicators">Mineralization Indicators (e.g., veining, alteration zones):</label>
+                <textarea id="mineralization-indicators" name="mineralization-indicators" rows="4"></textarea>
+    
+                <label for="structural-features">Structural Features (e.g., faults, folds, lineations):</label>
+                <textarea id="structural-features" name="structural-features" rows="4"></textarea>
+    
+                <label for="field-observations">Field Observations and Notes:</label>
+                <textarea id="field-observations" name="field-observations" rows="4"></textarea>
+
+                <label for="supervisor">Supervisor:</label>
+                <input type="text" id="supervisor" name="supervisor" required>
+    
+               
+            </fieldset>
+    
+            <!-- Geophysical Survey Stage -->
+            <fieldset>
+                <legend>Geophysical Survey</legend>
+
+                <label for="survey-date">Date:</label>
+                <input type="date" id="survey-date" name="survey-date" required>
+    
+                <label for="survey-shift">Shift:</label>
+                <select id="survey-shift" name="survey-shift" required>
+                    <option value="">Select Shift</option>
+                    <option value="day">Day</option>
+                    <option value="night">Night</option>
+                </select>
+    
+                <label for="survey-method">Survey Method (e.g., magnetic, electromagnetic):</label>
+                <select id="survey-method" name="survey-method" required>
+                    <option value="">Select Survey Method</option>
+                    <option value="magnetic">Magnetic</option>
+                    <option value="electromagnetic">Electromagnetic</option>
+                    <option value="gravity">Gravity</option>
+                    <option value="seismic">Seismic</option>
+                </select>
+    
+                <label for="survey-area">Survey Area (km<sup>2</sup>):</label>
+                <input type="number" id="survey-area" name="survey-area" min="0" step="0.01" required>
+    
+                <label for="equipment-used">Equipment Used (e.g., magnetometer, resistivity meter):</label>
+                <textarea id="equipment-used" name="equipment-used" rows="4"></textarea>
+    
+                <label for="anomalies-detected">Anomalies Detected (e.g., magnetic highs, resistivity lows):</label>
+                <textarea id="anomalies-detected" name="anomalies-detected" rows="4"></textarea>
+    
+                <label for="interpretation">Geophysical Interpretation:</label>
+                <textarea id="interpretation" name="interpretation" rows="4"></textarea>
+
+                <label for="supervisor">Supervisor:</label>
+                <input type="text" id="supervisor" name="supervisor" required>
+    
+                
+            </fieldset>
+    
+            <!-- Geochemical Analysis Stage -->
+            <fieldset>
+                <legend>Geochemical Analysis</legend>
+
+                <label for="geochem-date">Date:</label>
+                <input type="date" id="geochem-date" name="geochem-date" required>
+    
+                <label for="geochem-shift">Shift:</label>
+                <select id="geochem-shift" name="geochem-shift" required>
+                    <option value="">Select Shift</option>
+                    <option value="day">Day</option>
+                    <option value="night">Night</option>
+                </select>
+    
+                <label for="sample-id-range">Sample ID Range (e.g., GS-001 to GS-050):</label>
+                <input type="text" id="sample-id-range" name="sample-id-range" required>
+    
+                <label for="num-samples">Number of Samples Taken:</label>
+                <input type="number" id="num-samples" name="num-samples" min="1" required>
+    
+                <label for="sampling-geologist">Geologist Taking Samples:</label>
+                <input type="text" id="sampling-geologist" name="sampling-geologist" required>
+    
+                <label for="sampling-method">Sampling Method (e.g., grid sampling, panning):</label>
+                <textarea id="sampling-method" name="sampling-method" rows="4"></textarea>
+    
+                <label for="laboratory">Laboratory and Analytical Technique:</label>
+                <textarea id="laboratory" name="laboratory" rows="4"></textarea>
+    
+                
+            </fieldset>
+    
+            <!-- Trenching Stage -->
+            <fieldset>
+                <legend>Trenching</legend>
+
+                <label for="trench-date">Date:</label>
+                <input type="date" id="trench-date" name="trench-date" required>
+    
+                <label for="trench-shift">Shift:</label>
+                <select id="trench-shift" name="trench-shift" required>
+                    <option value="">Select Shift</option>
+                    <option value="day">Day</option>
+                    <option value="night">Night</option>
+                </select>
+    
+                <label for="trench-id">Trench ID (e.g., TR-01):</label>
+                <input type="text" id="trench-id" name="trench-id" required>
+    
+                <label for="trench-length">Trench Length (m):</label>
+                <input type="number" id="trench-length" name="trench-length" min="0" step="0.01" required>
+    
+                <label for="trench-width">Trench Width (m):</label>
+                <input type="number" id="trench-width" name="trench-width" min="0" step="0.01" required>
+    
+                <label for="sample-results">Sample Results (e.g., gold grades):</label>
+                <textarea id="sample-results" name="sample-results" rows="4"></textarea>
+    
+                <label for="geological-description">Geological Description of Trench:</label>
+                <textarea id="geological-description" name="geological-description" rows="4"></textarea>
+    
+                <label for="channel-sampling">Channel Sampling Details:</label>
+                <textarea id="channel-sampling" name="channel-sampling" rows="4"></textarea>
+
+                <label for="supervisor">Supervisor:</label>
+                <input type="text" id="supervisor" name="supervisor" required>
+    
+                
+            </fieldset>
+    
+            <!-- Drilling Stage -->
+            <fieldset>
+                <legend>Drilling</legend>
+
+                <label for="drill-date">Date:</label>
+                <input type="date" id="drill-date" name="drill-date" required>
+    
+                <label for="drill-shift">Shift:</label>
+                <select id="drill-shift" name="drill-shift" required>
+                    <option value="">Select Shift</option>
+                    <option value="day">Day</option>
+                    <option value="night">Night</option>
+                </select>
+    
+                <label for="drill-hole-id">Drill Hole ID (e.g., DH-01):</label>
+                <input type="text" id="drill-hole-id" name="drill-hole-id" required>
+    
+                <label for="drill-depth">Drill Depth (m):</label>
+                <input type="number" id="drill-depth" name="drill-depth" min="0" step="0.01" required>
+    
+                <label for="core-recovery">Core Recovery (%):</label>
+                <input type="number" id="core-recovery" name="core-recovery" min="0" max="100" step="0.1" required>
+    
+                <label for="gold-assay">Gold Assay (ppm):</label>
+                <input type="number" id="gold-assay" name="gold-assay" min="0" step="0.001" required>
+    
+                <label for="lithology">Lithology (e.g., rock types, textures):</label>
+                <textarea id="lithology" name="lithology" rows="4"></textarea>
+    
+                <label for="structural-analysis">Structural Analysis (e.g., dip, strike):</label>
+                <textarea id="structural-analysis" name="structural-analysis" rows="4"></textarea>
+    
+                <label for="downhole-logs">Downhole Geophysical Logs (if applicable):</label>
+                <textarea id="downhole-logs" name="downhole-logs" rows="4"></textarea>
+    
+                <label for="sampling-technique">Sampling Technique (e.g., RC, Diamond Core):</label>
+                <textarea id="sampling-technique" name="sampling-technique" rows="4"></textarea>
+
+                <label for="supervisor">Supervisor:</label>
+                <input type="text" id="supervisor" name="supervisor" required>
+    
+               
+            </fieldset>
+    
+            <!-- Submit Button -->
+            <button type="submit">Submit Exploration Metrics</button>
+            <div id="exploration-form-message" class="success-message"></div>
+        </form>
+    </section>
+    
+    
+    
+      <section id="safety" class="tab-content">
+          <h2>Safety Management</h2>
+          <div class="form-section">
+              <h3>Incident Report</h3>
+              <form id="safety-form" action="/submit_incident_report_data" method="POST">
+                  <label for="incident-date">Date of Incident:</label>
+                  <input type="date" id="incident-date" name="incident-date" required>
+                  
+                  <label for="incident-time">Time of Incident:</label>
+                  <input type="time" id="incident-time" name="incident-time" required>
+
+                  <label for="involved-person">Name of Person Involve:</label>
+                  <input type="text" id="involved-person" name="involved-person" required>
+
+                  <label for="employee-id">Employee ID:</label>
+                  <input type="number" id="employee-id" name="employee-id" required>
+
+                  <label for="department">Department:</label>
+                  <input type="text" id="department" name="department" required>
+
+                  <label for="section">Section:</label>
+                  <input type="text" id="section" name="section" required>
+                  
+                  <label for="incident-location">Location:</label>
+                  <input type="text" id="incident-location" name="incident-location" required>
+                  
+                  <label for="incident-type">Type of Incident:</label>
+                  <select id="incident-type" name="incident-type" required>
+                      <option value="">Select Incident Type</option>
+                      <option value="near-miss">Near Miss</option>
+                      <option value="injury-or-illness">Injury/Illness</option>
+                      <option value="property-damage">Property Damage</option>
+                      <option value="fire">Fire</option>
+                      <option value="environmental">Environmental Incident</option>
+                  </select>
+                  
+                  <label for="incident-description">Description of Incident:</label>
+                  <textarea id="incident-description" name="incident-description" rows="4" required></textarea>
+                  
+                  <label for="immediate-actions">Immediate Actions Taken:</label>
+                  <textarea id="immediate-actions" name="immediate-actions" rows="4" required></textarea>
+                  
+                  <label for="control-measures">Control Measures:</label>
+                  <textarea id="control-measures" name="control-measures" rows="4" required></textarea>
+                  
+                  <label for="recommendations">Recommendations:</label>
+                  <textarea id="recommendations" name="recommendations" rows="4" required></textarea>
+                  
+                  <button type="submit">Submit Incident Report</button>
+                  <div id="safety-form-message" class="success-message"></div>
+              </form>
+              <h3>Hazard Report</h3>
+              <form id="hazard-form" action="/submit_hazard_report_data" method="POST">
+                  <label for="Hazard-date">Date of Hazard:</label>
+                  <input type="date" id="Hazard-date" name="Hazard-date" required>
+                  
+                  <label for="Hazard">Time Hazard was Identified:</label>
+                  <input type="time" id="Hazard-time" name="Hazard-time" required>
+                  
+                  <label for="Hazard-location">Location:</label>
+                  <input type="text" id="Hazard-location" name="Hazard-location" required>
+                  
+                  <label for="Hazard-description">Description of Hazard:</label>
+                  <textarea id="Hazard-description" name="Hazard-description" rows="4" required></textarea>
+                  
+                  <label for="Controls implemented">Controls Implemented:</label>
+                  <textarea id="Controls implemented" name="Controls implemented" rows="4" required></textarea>
+                  
+                  <label for="Employee Name">Employee Name:</label>
+                  <input type="text" id="Employee Name" name="Employee Name" required>
+
+                  <label for="employee-id">Employee ID:</label>
+                  <input type="number" id="employee-id" name="employee-id" required>
+
+                  <label for="Supervisor Name">Supervisor Name:</label>
+                  <input type="text" id="Supervisor Name" name="Supervisor Name" required>
+                  
+                  <button type="submit">Submit Hazard Report</button>
+                  <div id="hazard-form-message" class="success-message"></div>
+              </form>
+          </div>
+      </section>
+      
+      <section id="maintenance" class="tab-content">
+          <h2>Maintenance Management</h2>
+          <div class="form-section">
+              <h3>Equipment Maintenance Schedule</h3>
+              <form id="maintenance-form" action="/submit_maintenance_data" method="POST">
+                  <label for="equipment-id">Equipment ID:</label>
+                  <input type="text" id="equipment-id" name="equipment-id" required>
+                  
+                  <label for="equipment-type">Equipment Type:</label>
+                  <select id="equipment-type" name="equipment-type" required>
+                      <option value="">Select Equipment Type</option>
+                      <option value="excavator">Excavator</option>
+                      <option value="haul-truck">Haul Truck</option>
+                      <option value="drill-rig">Drill Rig</option>
+                      <option value="crusher">Crusher</option>
+                      <option value="conveyor">Conveyor</option>
+                      <option value="stacker">Stacker</option>
+                      <option value="other">Other</option>
+                  </select>
+                  
+                  <label for="maintenance-type">Maintenance Type:</label>
+                  <select id="maintenance-type" name="maintenance-type" required>
+                      <option value="">Select Maintenance Type</option>
+                      <option value="routine">Routine</option>
+                      <option value="preventive">Preventive</option>
+                      <option value="corrective">Corrective</option>
+                      <option value="overhaul">Overhaul</option>
+                  </select>
+                  
+                  <label for="scheduled-date">Scheduled Date:</label>
+                  <input type="date" id="scheduled-date" name="scheduled-date" required>
+                  
+                  <label for="estimated-duration">Estimated Duration (hours):</label>
+                  <input type="number" id="estimated-duration" name="estimated-duration" min="0" step="0.5" required>
+                  
+                  <label for="maintenance-description">Maintenance Description:</label>
+                  <textarea id="maintenance-description" name="maintenance-description" rows="4" required></textarea>
+                  
+                  <label for="parts-required">Parts Required:</label>
+                  <textarea id="parts-required" name="parts-required" rows="4"></textarea>
+                  
+                  <label for="technician-assigned">Technician Assigned:</label>
+                  <input type="text" id="technician-assigned" name="technician-assigned" required>
+                  
+                  <button type="submit">Schedule Maintenance</button>
+                  <div id="maintenance-form-message" class="success-message"></div>
+              </form>
+          </div>
+      </section>
+      
+      <section id="environmental" class="tab-content">
+          <h2>Environmental Management</h2>
+          <div class="form-section">
+              <h3>Air and Noise Monitoring</h3>
+              <form id="air-and-noise-monitoring-form" action="/submit_monitoring_data" method="POST">
+                  <label for="monitoring-date">Date:</label>
+                  <input type="date" id="monitoring-date" name="monitoring-date" required>
+
+                  <label for="monitoring-time">Time:</label>
+                  <input type="time" id="monitoring-time" name="monitoring-time" required>
+                  
+                  <label for="monitoring-location">Monitoring Location:</label>
+                  <input type="text" id="monitoring-location" name="monitoring-location" required>
+
+                  <label for="air-monitoring-device">Device Name (Air):</label>
+                  <input type="text" id="air-monitoring-device" name="air-monitoring-device" required>
+
+                  <label for="noise-monitoring-device">Device Name (Noise):</label>
+                  <input type="text" id="noise-monitoring-device" name="noise-monitoring-device" required>
+
+                  <label for="air-quality-pm25">Air Quality (PM2.5 μg/m³):</label>
+                  <input type="number" id="air-quality-pm25" name="air-quality-pm25" step="0.1" min="0" required>
+
+                  <label for="air-quality-pm10">Air Quality (PM10 μg/m³):</label>
+                  <input type="number" id="air-quality-pm10" name="air-quality-pm10" step="0.1" min="0" required>
+
+                  <label for="total-suspended-particles">Total Suspended Particles (μg/m³):</label>
+                  <input type="number" id="total-suspended-particles" name="total-suspended-particles" step="0.1" min="0" required>
+
+                  <label for="hcn">HCN:</label>
+                  <input type="number" id="hcn" name="hcn" required>
+
+                  <label for="so2">SO2:</label>
+                  <input type="number" id="so2" name="so2" required>
+
+                  <label for="no2">NO2:</label>
+                  <input type="number" id="no2" name="no2" required>
+
+                  <label for="co3">CO3:</label>
+                  <input type="number" id="co3" name="co3" required>
+
+                  <label for="o3">O3:</label>
+                  <input type="number" id="o3" name="o3" required>
+
+                  <label for="noise-level-max">Max Noise Level (dB):</label>
+                  <input type="number" id="noise-level-max" name="noise-level-max" step="0.1" min="0" required>
+
+                  <label for="noise-level-min">Min Noise Level (dB):</label>
+                  <input type="number" id="noise-level-min" name="noise-level-min" step="0.1" min="0" required>
+
+                  <label for="noise-level-avg">Average Noise Level (dB):</label>
+                  <output type="number" id="noise-level-avg" name="noise-level-avg" step="0.1" min="0" required>
+
+                  <label for="sample-environment-description">Sample Environment Description:</label>
+                  <textarea id="sample-environment-description" name="sample-environment-description" rows="4"></textarea>
+
+                  <label for="monitors-name">Monitor's Name:</label>
+                  <input type="text" id="monitors-name" name="monitors-name" required>
+
+                  <button type="submit">Submit Monitoring Data</button>
+                  <div id="monitoring-form-message" class="success-message"></div>
+                </form>
+              <h3>Water Sampling</h3>
+              <form id="water-sampling-form" action="/submit_water_sample_data" method="POST">
+                  <label for="water-sampling-date">Date:</label>
+                  <input type="date" id="water-sampling-date" name="water-sampling-date" required>
+
+                  <label for="water-sampling-time">Time:</label>
+                  <input type="time" id="water-sampling-time" name="water-sampling-time" required>
+
+                  <label for="samplers-name">Sampler's Name:</label>
+                  <input type="text" id="samplers-name" name="samplers-name" required>
+
+                  <label for="sample-location">Sample Location:</label>
+                  <input type="text" id="sample-location" name="sample-location" required>
+
+                  <label for="sample-id">Sample ID:</label>
+                  <input type="text" id="sample-id" name="sample-id" required>
+                  <label for="sample-colour">Sample Colour:</label>
+                  <select id="sample-colour" name="sample-colour" required>
+                      <option value="">Select Sample colour</option>
+                      <option value="straw">Straw</option>
+                      <option value="colourless">Colourless</option>
+                      <option value="milky tea">Milky Tea</option>
+                      <option value="brown">Brown</option>
+                  </select>
+
+                  <label for="water-temperature">Water Temperature:</label>
+                  <input type="number" id="water-temperature" name="water-temperature" required>
+
+                  <label for="total-dissolved-solid">TDS:</label>
+                  <input type="number" id="total-dissolved-solid" name="total-dissolved-solid" required>
+
+                  <label for="water-ph">Water pH:</label>
+                  <input type="number" id="water-ph" name="water-ph" required>
+
+                  <label for="water-conductivity">Water Conductivity:</label>
+                  <input type="number" id="water-conductivity" name="water-conductivity" required>
+
+                  <label for="dissolved-oxygen">Dissolved Oxygen (DO):</label>
+                  <input type="number" id="dissolved-oxygen" name="dissolved-oxygen" required>
+
+                  <label for="water-sample-area-description">Area Description:</label>
+                  <textarea id="water-sample-area-description" name="water-sample-area-description" rows="4"></textarea>
+
+                  <button type="submit">Submit Water Sample Data</button>
+                  <div id="water-sampling-form-message" class="success-message"></div>
+                </form>
+                <h3>Site Facility Inspections</h3>
+              <form id="site-inspections" action="/submit_inspection_data" method="POST">
+                  <label for="inspection-date">Inspection Date:</label>
+                  <input type="date" id="inspection-date" name="inspection-date" required>
+
+                  <label for="inspection-time">Assessment Time:</label>
+                  <input type="time" id="inspection-time" name="inspection-time" required>
+
+                  <label for="notes">Inspection Notes:</label>
+                  <textarea id="notes" name="notes" rows="10"></textarea>
+
+                  <label for="inspectors">Inspectors Name:</label>
+                  <input type="text" id="inspectors" name="inspectors" required>
+
+                  <button type="submit">Submit Inspection</button>
+                  <div id="inspection-form-message" class="success-message"></div>
+              </form>
+          </div>
+      </section>
+      
+      <section id="community-relations" class="tab-content">
+        <h2>Community Relations Management</h2>
+        <div class="form-section">
+            <h3>Complaint form</h3>
+            <form id="complaint-form" action="/submit_complaint_data" method="POST">
+                <label for="complaint-date">Complaint Date:</label>
+                <input type="date" id="complaint-date" name="complaint-date" required>
+                <label for="complaint-time">Time of Complaint:</label>
+                <input type="time" id="complaint-time" name="complaint-time" required>
+                
+                <label for="complainant">Complainant Name:</label>
+                <input type="text" id="complainant" name="complainant" required>
+                
+                <label for="complainant-contact">Complainant Contact:</label>
+                <input type="tel" id="complainant-contact" name="complainant-contact" required>
+
+                <label for="mode-of-report">Mode of Report:</label>
+                  <select id="mode-of-report" name="mode-of-report" required>
+                      <option value="">Select Mode of Report</option>
+                      <option value="site-visit">Site Visit</option>
+                      <option value="phone-call">Phone Call</option>
+                      <option value="written-letter">Written Letter</option>
+                  </select>
+                  
+                <label for="complain-description">Complain:</label>
+                <textarea id="complain-description" name="complain-description" rows="5"></textarea>
+                
+                <label for="recipient">Recipient:</label>
+                <input type="text" id="recipient" name="recipient" required>
+                
+                <button type="submit">Submit Complaint</button>
+                <div id="complaint-form-message" class="success-message"></div>
+            </form>
+            <h3>Requests form</h3>
+            <form id="requests-form" action="/submit_requests_data" method="POST">
+                <label for="request-date">Request Date:</label>
+                <input type="date" id="request-date" name="request-date" required>
+
+                <label for="request-time">Time of Request:</label>
+                <input type="time" id="request-time" name="request-time" required>
+                
+                <label for="source-of-request">Source of Request:</label>
+                <input type="text" id="source-of-request" name="source-of-request" required>
+                
+                <label for="requester-contact">Requester Contact:</label>
+                <input type="number" id="requester-contact" name="requester-contact" required>
+
+                <label for="request-type">Request Type:</label>
+                  <select id="request-type" name="request-type" required>
+                      <option value="">Select Request Type</option>
+                      <option value="financial">Financial</option>
+                      <option value="logistics">Logistics</option>
+                      <option value="services">Services</option>
+                      <option value="invitation">Invitation</option>
+                  </select>
+                  
+                <label for="request-description">Request:</label>
+                <textarea id="request-description" name="request-description" rows="5"></textarea>
+                
+                <label for="recipient">Recipient:</label>
+                <input type="text" id="recipient" name="recipient" required>
+                
+                <button type="submit">Submit Request</button>
+                <div id="requests-form-message" class="success-message"></div>
+            </form>
+            <h3>Stakeholder Engagement form</h3>
+            <form id="stakeholder-engagement-form" action="/submit_stakeholder_engagement_data" method="POST">
+                <label for="event-date">Event Date:</label>
+                <input type="date" id="event-date" name="event-date" required>
+
+                <label for="event-time">Event Time:</label>
+                <input type="time" id="event-time" name="event-time" required>
+                
+                <label for="event-venue">Event Venue:</label>
+                <input type="text" id="event-venue" name="event-venue" required>
+
+                <label for="event-organizer">Event Organizers:</label>
+                <input type="text" id="event-organizer" name="event-organizer" required>
+                
+                <label for="organizer-contact">Organizer Contact:</label>
+                <input type="tel" id="organizer-contact" name="organizer-contact" required>
+                  
+                <label for="event-purpose">Purpose:</label>
+                <textarea id="event-purpose" name="event-purpose" rows="10"></textarea>
+                
+                <label for="issues-raised">Issues Raised:</label>
+                <textarea id="issues-raised" name="issues-raised" rows="10"></textarea>
+                
+                <button type="submit">Submit Engagement</button>
+                <div id="stakeholder-form-message" class="success-message"></div>
+            </form>
+            <h3>Land and Crop Assessment</h3>
+            <form id="land-and-crop-assessment" action="/submit_assessment_data" method="POST">
+                <label for="assessment-date">Assessment Date:</label>
+                <input type="date" id="assessment-date" name="assessment-date" required>
+
+                <label for="assessment-time">Assessment Time:</label>
+                <input type="time" id="assessment-time" name="assessment-time" required>
+                
+                <label for="land-owner">Land Owner:</label>
+                <input type="text" id="land-owner" name="land-owner" required>
+
+                <label for="land-owner-contact">Land Owner Contact:</label>
+                <input type="tel" id="land-owner-contact" name="land-owner-contact" required>
+
+                <label for="farm-owner">Farm Owner:</label>
+                <input type="text" id="farm-owner" name="farm-owner" required>
+                
+                <label for="farm-owner-contact">Farm Owner Contact:</label>
+                <input type="tel" id="farm-owner-contact" name="farm-owner-contact" required>
+                  
+                <label for="land-size">Land/Farm Size:</label>
+                <input type="number" id="land-size" name="land-size" required>
+                
+                <label for="crop-type-and-status">Crop Type and Status:</label>
+                <textarea id="crop-type-and-status" name="crop-type-and-status" rows="10"></textarea>
+
+                <label for="assessed-by">Assessed By:</label>
+                <input type="text" id="assessed-by" name="assessed-by" required>
+                
+                <label for="community-rep">Community Rep Name:</label>
+                <input type="text" id="community-rep" name="community-rep" required>
+
+                <button type="submit">Submit Assessment</button>
+                <div id="assessment-form-message" class="success-message"></div>
+            </form>
+        </div>
+    </section>
+  </main>
+  
+  <footer>
+      <p>&copy; 2024 GAL Mining KPI Dashboard & Management. All rights reserved.</p>
+  </footer>
+
+  <script>
+      document.addEventListener('DOMContentLoaded', function() {
+          const tabLinks = document.querySelectorAll('.tab-link');
+          const tabContents = document.querySelectorAll('.tab-content');
+
+          tabLinks.forEach(link => {
+              link.addEventListener('click', function(e) {
+                  e.preventDefault();
+                  const tabId = this.getAttribute('data-tab');
+
+                  tabLinks.forEach(link => link.classList.remove('active'));
+                  tabContents.forEach(content => content.classList.remove('active'));
+
+                  this.classList.add('active');
+                  document.getElementById(tabId).classList.add('active');
+
+                  // Store the active tab in localStorage
+                  localStorage.setItem('activeTab', tabId);
+              });
+          });
+
+          // Function to fetch KPIs from the server
+          function fetchKPIs() {
+              fetch('/get_kpis')
+                  .then(response => response.json())
+                  .then(data => {
+                      if (data.error) {
+                          console.error(data.error);
+                          return;
+                      }
+
+                      // Update the KPI dashboard with the fetched data
+                      document.getElementById('total-ore-mined').textContent = data.total_ore_mined;
+                      document.getElementById('total-waste-mined').textContent = data.total_waste_mined;
+                      document.getElementById('striping-ratio').textContent = data.striping_ratio.toFixed(2);
+                  })
+                  .catch(error => console.error('Error fetching KPIs:', error));
+          }
+          fetchKPIs(); // Call the function to fetch KPIs
+
+          // Function to handle form submission
+          function handleFormSubmission(formId, messageDivId) {
+              document.getElementById(formId).addEventListener('submit', function(event) {
+                  event.preventDefault(); // Prevent the default form submission
+
+                  const formData = new FormData(this);
+                  fetch(this.action, {
+                      method: this.method,
+                      body: formData
+                  })
+                  .then(response => response.json())
+                  .then(data => {
+                      const messageDiv = document.getElementById(messageDivId);
+                      if (data.message) {
+                          messageDiv.textContent = data.message; // Show success message
+                          messageDiv.style.color = 'green'; // Optional: Change text color to green
+                      }
+                  })
+                  .catch(error => console.error('Error:', error));
+              });
+          }
+        
+          // Attach form submission handlers
+          handleFormSubmission('mining-form', 'mining-form-message');
+          handleFormSubmission('safety-form', 'safety-form-message');
+          handleFormSubmission('equipment-statistics-form', 'equipment-form-message');
+          handleFormSubmission('hazard-form', 'hazard-form-message');
+          handleFormSubmission('maintenance-form', 'maintenance-form-message');
+          handleFormSubmission('air-and-noise-monitoring-form', 'monitoring-form-message');
+          handleFormSubmission('water-sampling-form', 'water-sampling-form-message');
+          handleFormSubmission('site-inspections', 'inspection-form-message');
+          handleFormSubmission('complaint-form', 'complaint-form-message');
+          handleFormSubmission('requests-form', 'requests-form-message');
+          handleFormSubmission('stakeholder-engagement-form', 'stakeholder-form-message');
+          handleFormSubmission('land-and-crop-assessment', 'assessment-form-message');
+          handleFormSubmission('geology-metrics-form', 'geology-form-message');
+      });
+  </script>
+</body>
+</html>
