@@ -36,3 +36,7 @@ gunicorn==21.2.0
 # Additional Dependencies
 click==8.1.7
 itsdangerous==2.1.2 
+
+flask
+gunicorn
+flask-session
